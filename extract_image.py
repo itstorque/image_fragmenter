@@ -8,21 +8,27 @@ def get_pixel_matrix(image):
 
     print(image.size, len(list(image.getdata())))
 
-    return np.array(image.getdata()).reshape(image.size)
+    data = image.getdata()
+
+    image = np.asarray(data, np.dtype('int,int,int,int'))
+
+    return image.reshape(image.size)
 
 def resize_image(image, size=None, height=None, width=None):
 
-    if size != None and (height != None or width != None):
+    if size != None and (height != None and width != None):
 
         raise TooManyArguments
 
-    elif size == None and (height == None or width == None):
+    elif size == None and (height == None and width == None):
 
         raise NotEnoughArguments
 
     if size == None:
 
         size = scale_aspect_ratio(image.size, height or width, width!=None)
+
+    print(size)
 
     image = image.resize(size, Image.ANTIALIAS)
 
@@ -46,7 +52,9 @@ def scale_aspect_ratio(original_size, new_dimension, is_width=True):
 
         new_dimension = original_size[axis] * scale
 
-    if scale == None: scale = new_dimension / original_size
+    if scale == None: scale = int(new_dimension / original_size[axis])
+
+    if scale == 0: scale = 1
 
     new_size = (new_dimension, original_size[1-axis]*scale)
 
@@ -56,5 +64,7 @@ def scale_aspect_ratio(original_size, new_dimension, is_width=True):
 
 img = Image.open('dome.png')
 rgb_img = img.convert('RGB')
+
+img = resize_image(img, width=10)
 
 print(get_pixel_matrix(img))
