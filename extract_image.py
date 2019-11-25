@@ -55,7 +55,7 @@ def scale_aspect_ratio(original_size, new_dimension, is_width=True):
 
     if "x" in str(new_dimension):
 
-        scale = int(re.search(r'\d+', str(new_dimension)).group())
+        scale = float(re.search(r'x\d?.*\d', str(new_dimension)).group())
 
         new_dimension = original_size[axis] * scale
 
