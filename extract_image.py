@@ -15,6 +15,11 @@ def get_pixel_matrix(image):
     return image.reshape(image.size)
 
 def resize_image(image, size=None, height=None, width=None):
+    """
+        Either define size, height or width:
+            defining size, resizes it to any tuple (width, height) input.
+            defining height or width will maintain aspect ratio and resize the dimension specified
+    """
 
     if size != None and (height != None and width != None):
 
@@ -23,6 +28,8 @@ def resize_image(image, size=None, height=None, width=None):
     elif size == None and (height == None and width == None):
 
         raise NotEnoughArguments
+
+    if height and width: raise TooManyArguments
 
     if size == None:
 
@@ -52,11 +59,9 @@ def scale_aspect_ratio(original_size, new_dimension, is_width=True):
 
         new_dimension = original_size[axis] * scale
 
-    if scale == None: scale = int(new_dimension / original_size[axis])
+    if scale == None: scale = new_dimension / original_size[axis]
 
-    if scale == 0: scale = 1
-
-    new_size = (new_dimension, original_size[1-axis]*scale)
+    new_size = (new_dimension, int(original_size[1-axis]*scale))
 
     if not is_width: new_size = new_size[::-1]
 
@@ -66,5 +71,7 @@ img = Image.open('dome.png')
 rgb_img = img.convert('RGB')
 
 img = resize_image(img, width=10)
+
+img.show()
 
 print(get_pixel_matrix(img))
