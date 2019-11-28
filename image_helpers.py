@@ -6,8 +6,6 @@ import re
 
 def get_pixel_matrix(image):
 
-    print(image.size, len(list(image.getdata())))
-
     data = image.getdata()
 
     image = np.asarray(data, np.dtype('int,int,int,int'))
@@ -67,11 +65,13 @@ def scale_aspect_ratio(original_size, new_dimension, is_width=True):
 
     return new_size
 
-img = Image.open('dome.png')
-rgb_img = img.convert('RGB')
+def openImageWithSettings(path, size=None, width=None, height=None, format="RGB"):
 
-img = resize_image(img, width=10)
+    img = Image.open(path)
+    rgb_img = img.convert('RGB')
 
-img.show()
+    if [size, width, height] != [None]*3:
 
-print(get_pixel_matrix(img))
+        img = resize_image(img, size=size, width=width, height=height)
+
+    return img
