@@ -8,9 +8,9 @@ def get_pixel_matrix(image):
 
     data = image.getdata()
 
-    image = np.asarray(data, np.dtype('int,int,int,int'))
+    image_array = np.asarray(data, np.dtype('int,int,int,int'))
 
-    return image.reshape(image.size)
+    return image_array.reshape(image.size)
 
 def resize_image(image, size=None, height=None, width=None):
     """
